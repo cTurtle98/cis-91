@@ -1,0 +1,8 @@
+plugin: gcp_compute
+projects:
+  - cis-91-fall-2021
+auth_kind: serviceaccount
+service_account_file: ${HOME}/cis-91/secrets/cis-91.key
+keyed_groups:
+  - prefix: gcp
+    key: labels
