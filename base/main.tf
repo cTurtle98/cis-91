@@ -4,7 +4,7 @@ variable "credentials_file" {
 }
 
 variable "project" {
-  default = "your-project-here"
+  default = "cis-91-fall-2021"
 }
 
 variable "region" {
