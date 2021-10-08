@@ -22,3 +22,4 @@ sudo rm -R /home/gollum
 sudo rm -R /home/legolas
 sudo rm -R /home/gimli
 
+sudo rm /var/preserve/*

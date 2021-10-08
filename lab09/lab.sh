@@ -43,7 +43,7 @@ useradd -N -m -p Cabr11o -u 1701 -g 1700 -c "Legolas of Mirkwood" -s '/bin/zsh' 
 
 echo "******** gimli"
 useradd -N -m -f 0 -u 1801 -g 1800 -c "Gimli son of Gloin" -s '/bin/bash' gimli
-
+passwd -d gimli
 
 # reset password
 echo "[]******** reset password"
