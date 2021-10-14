@@ -8,13 +8,5 @@
         update_cache: yes
         cache_valid_time: 3600
         name:
-          - apache2
-          - php
-          - php-xml
-    - name: download and unarchive dokuwiki to webroot
-      ansible.builtin.unarchive:
-        src: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
-        dest: /var/www/html
-        owner: www-data
-        group: www-data
-        mode: '755'
+          - python3-pip 
+          - python3-venv
