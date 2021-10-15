@@ -42,8 +42,24 @@ resource "google_project_iam_member" "project_member" {
   member = "serviceAccount:${google_service_account.proj1-service-account.email}"
 }
 
+resource "google_project_iam_member" "storage_access" {
+  role = "roles/storage.objectAdmin"
+  member = "serviceAccount:${google_service_account.proj1-service-account.email}"
+}
 resource "google_compute_network" "vpc_network" {
   name = "cis91-network"
+}
+
+resource "google_compute_disk" "data_disk" {
+  name = "data"
+  type = "pd-standard"
+  size = "100"
+}
+
+resource "google_compute_attached_disk" "data_disk" {
+  instance = google_compute_instance.vm_instance.id
+  disk = google_compute_disk.data_disk.id
+  device_name = "data_disk"
 }
 
 resource "google_compute_instance" "vm_instance" {
@@ -66,6 +82,10 @@ resource "google_compute_instance" "vm_instance" {
     access_config {
     }
   }
+  
+  lifecycle {
+  ignore_changes = [attached_disk]
+}
 }
 
 resource "google_compute_firewall" "default-firewall" {
@@ -73,7 +93,7 @@ resource "google_compute_firewall" "default-firewall" {
   network = google_compute_network.vpc_network.name
   allow {
     protocol = "tcp"
-    ports = ["22"]
+    ports = ["22, 80"]
   }
   source_ranges = ["0.0.0.0/0"]
 }
