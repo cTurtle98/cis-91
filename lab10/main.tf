@@ -35,6 +35,17 @@ resource "google_compute_network" "vpc_network" {
   name = "cis91-network"
 }
 
+resource "google_compute_disk" "data_disk" {
+  name = "data"
+  type = "pd-standard"
+  size = "100"
+}
+
+resource "google_compute_attached_disk" "data_disk" {
+  instance = google_compute_instance.vm_instance.id
+  disk = google_compute_disk.data_disk.id
+}
+
 resource "google_compute_instance" "vm_instance" {
   name         = "cis91"
   machine_type = "e2-micro"
@@ -50,6 +61,10 @@ resource "google_compute_instance" "vm_instance" {
     access_config {
     }
   }
+
+  lifecycle {
+  ignore_changes = [attached_disk]
+}
 }
 
 resource "google_compute_firewall" "default-firewall" {
