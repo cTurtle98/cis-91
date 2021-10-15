@@ -10,3 +10,14 @@
         name:
           - python3-pip 
           - python3-venv
+
+    - name: format storage
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/disk/by-id/google-data_disk
+      ansible.posix.mount:
+        boot: yes
+        fstype: ext4
+        path: /data
+        src: /dev/disk/by-id/google-data_disk
+        state: mounted

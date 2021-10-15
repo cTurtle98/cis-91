@@ -44,6 +44,7 @@ resource "google_compute_disk" "data_disk" {
 resource "google_compute_attached_disk" "data_disk" {
   instance = google_compute_instance.vm_instance.id
   disk = google_compute_disk.data_disk.id
+  device_name = "data_disk"
 }
 
 resource "google_compute_instance" "vm_instance" {
