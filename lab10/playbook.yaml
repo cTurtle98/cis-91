@@ -3,6 +3,7 @@
   name: Add cis-92 packages
   become: yes
   tasks:
+
     - name: Install packages 
       ansible.builtin.apt:
         update_cache: yes
@@ -15,6 +16,8 @@
       community.general.filesystem:
         fstype: ext4
         dev: /dev/disk/by-id/google-data_disk
+
+    - name: mount storage
       ansible.posix.mount:
         boot: yes
         fstype: ext4
