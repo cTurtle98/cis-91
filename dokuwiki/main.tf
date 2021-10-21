@@ -50,6 +50,20 @@ resource "google_compute_network" "vpc_network" {
   name = "cis91-network"
 }
 
+resource "google_storage_bucket" "static-site" {
+  name = "ciaran-cis91-project1-backups"
+  location = "US"
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      age = "180"
+    }
+  }
+
+}
+
 resource "google_compute_disk" "data_disk" {
   name = "data"
   type = "pd-standard"
