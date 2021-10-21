@@ -85,7 +85,7 @@ resource "google_compute_instance" "vm_instance" {
   
   lifecycle {
   ignore_changes = [attached_disk]
-}
+  }
 }
 
 resource "google_compute_firewall" "default-firewall" {
