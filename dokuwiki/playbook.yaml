@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  name: Add cis-92 packages
+  name: cis-91 project 1 dokuwiki
   become: yes
   tasks:
     - name: Install packages 
@@ -25,10 +25,18 @@
         src: /dev/disk/by-id/google-data_disk
         state: mounted
 
+    - name: create www/html folder
+      ansible.builtin.file:
+        state: directory
+        owner: www-data
+        group: www-data
+        path: /var/www/html
+
     - name: unarchive dokuwiki
       ansible.builtin.unarchive:
         remote_src: yes
         src: https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
         dest: /var/www/html
         owner: www-data
+        extra_opts: -C
 
