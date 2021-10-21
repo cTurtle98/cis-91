@@ -34,3 +34,11 @@
         owner: www-data
         extra_opts: --strip-components=1
 
+    - name: add backup script
+      ansible.builtin.copy:
+        remote_src: yes
+        src: https://raw.githubusercontent.com/cTurtle98/cis-91/main/dokuwiki/backup.sh
+        dest: /etc/cron.hourly/backup
+        owner: root
+        group: root
+        mode: u+rwx
