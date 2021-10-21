@@ -3,14 +3,6 @@
   name: cis-91 project 1 dokuwiki
   become: yes
   tasks:
-    - name: Install packages 
-      ansible.builtin.apt:
-        update_cache: yes
-        cache_valid_time: 3600
-        name:
-          - apache2 
-          - php
-          - php-xml
 
     - name: format storage
       community.general.filesystem:
@@ -25,12 +17,15 @@
         src: /dev/disk/by-id/google-data_disk
         state: mounted
 
-    - name: create www/html folder
-      ansible.builtin.file:
-        state: directory
-        owner: www-data
-        group: www-data
-        path: /var/www/html
+    - name: Install packages 
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        name:
+          - apache2 
+          - php
+          - php-xml
+          - unzip
 
     - name: unarchive dokuwiki
       ansible.builtin.unarchive:
