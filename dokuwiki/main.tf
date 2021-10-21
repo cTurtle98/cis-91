@@ -53,6 +53,7 @@ resource "google_compute_network" "vpc_network" {
 resource "google_storage_bucket" "static-site" {
   name = "ciaran-cis91-project1-backups"
   location = "US"
+  force_destroy = "true"
   lifecycle_rule {
     action {
       type = "Delete"
@@ -61,7 +62,6 @@ resource "google_storage_bucket" "static-site" {
       age = "180"
     }
   }
-
 }
 
 resource "google_compute_disk" "data_disk" {

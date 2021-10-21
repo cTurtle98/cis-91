@@ -4,6 +4,15 @@
   become: yes
   tasks:
 
+    - name: Install packages 
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+        name:
+          - apache2 
+          - php
+          - php-xml
+
     - name: format storage
       community.general.filesystem:
         fstype: ext4
@@ -17,14 +26,12 @@
         src: /dev/disk/by-id/google-data_disk
         state: mounted
 
-    - name: Install packages 
-      ansible.builtin.apt:
-        update_cache: yes
-        cache_valid_time: 3600
-        name:
-          - apache2 
-          - php
-          - php-xml
+    - name: create www/html folder
+      ansible.builtin.file:
+        state: directory
+        owner: www-data
+        group: www-data
+        path: /var/www/html
 
     - name: unarchive dokuwiki
       ansible.builtin.unarchive:
@@ -36,8 +43,7 @@
 
     - name: add backup script
       ansible.builtin.copy:
-        remote_src: yes
-        src: https://raw.githubusercontent.com/cTurtle98/cis-91/main/dokuwiki/backup.sh
+        src: ./backup.sh
         dest: /etc/cron.hourly/backup
         owner: root
         group: root
