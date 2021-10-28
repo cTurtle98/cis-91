@@ -65,7 +65,7 @@ resource "google_compute_instance" "vm_instance" {
 }
 
 resource "google_compute_firewall" "default-firewall" {
-  name = "default-firewall"
+  name = "lab11-net1-firewall"
   network = google_compute_network.vpc_network_1.name
   allow {
     protocol = "tcp"
