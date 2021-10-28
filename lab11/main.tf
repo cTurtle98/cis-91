@@ -31,12 +31,24 @@ provider "google" {
   project = var.project
 }
 
-resource "google_compute_network" "vpc_network" {
-  name = "cis91-network"
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_network
+resource "google_compute_network" "vpc_network_1" {
+  name = "lab11-net1"
+  auto_create_subnetworks = "false"
+}
+
+resource "google_compute_network" "vpc_network_2" {
+  name = "lab11-net2"
+  auto_create_subnetworks = "false"
+}
+
+resource "google_compute_network" "vpc_network_3" {
+  name = "lab11-net3"
+  auto_create_subnetworks = "false"
 }
 
 resource "google_compute_instance" "vm_instance" {
-  name         = "cis91"
+  name         = "lab11-vm1"
   machine_type = "e2-micro"
 
   boot_disk {
@@ -46,7 +58,7 @@ resource "google_compute_instance" "vm_instance" {
   }
 
   network_interface {
-    network = google_compute_network.vpc_network.name
+    network = google_compute_network.vpc_network_1.name
     access_config {
     }
   }
@@ -54,7 +66,7 @@ resource "google_compute_instance" "vm_instance" {
 
 resource "google_compute_firewall" "default-firewall" {
   name = "default-firewall"
-  network = google_compute_network.vpc_network.name
+  network = google_compute_network.vpc_network_1.name
   allow {
     protocol = "tcp"
     ports = ["22"]
