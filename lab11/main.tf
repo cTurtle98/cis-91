@@ -37,7 +37,7 @@ resource "google_compute_network" "vpc_network" {
   auto_create_subnetworks = "false"
 }
 
-
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_subnetwork
 
 resource "google_compute_instance" "vm_instance" {
   name         = "lab11-vm1"
