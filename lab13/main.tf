@@ -35,6 +35,7 @@ resource "google_compute_network" "vpc_network" {
   name = "cis91-network"
 }
 
+# webserver virtual machines
 resource "google_compute_instance" "webservers" {
   count        = 3
   name         = "web${count.index}"
@@ -67,6 +68,7 @@ resource "google_compute_firewall" "default-firewall" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+# get list of virtual machine ip addresses
 output "external-ip" {
-  value = google_compute_instance.vm_instance.network_interface[0].access_config[0].nat_ip
+  value = google_compute_instance.webservers[*].network_interface[0].access_config[0].nat_ip
 }
