@@ -58,6 +58,7 @@ resource "google_compute_instance" "webservers" {
   }
 }
 
+# firewall
 resource "google_compute_firewall" "default-firewall" {
   name = "default-firewall"
   network = google_compute_network.vpc_network.name
@@ -68,7 +69,80 @@ resource "google_compute_firewall" "default-firewall" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+# Step 4: Create a Health Check
+resource "google_compute_health_check" "webservers" {
+  name = "webserver-health-check"
+
+  timeout_sec        = 1
+  check_interval_sec = 1
+
+  http_health_check {
+    port = 80
+  }
+}
+
+# Step 5: Create a Target Group and Service
+resource "google_compute_instance_group" "webservers" {
+  name        = "cis91-webservers"
+  description = "Webserver instance group"
+
+  instances = google_compute_instance.webservers[*].self_link
+
+  named_port {
+    name = "http"
+    port = "80"
+  }
+}
+
+# Step 6: Create a Service
+resource "google_compute_backend_service" "webservice" {
+  name      = "web-service"
+  port_name = "http"
+  protocol  = "HTTP"
+
+  backend {
+    group = google_compute_instance_group.webservers.id
+  }
+
+  health_checks = [
+    google_compute_health_check.webservers.id
+  ]
+}
+
+# Step 7: The Resources that Make a Load Balancer
+
+# URL Map
+resource "google_compute_url_map" "default" {
+  name            = "my-site"
+  default_service = google_compute_backend_service.webservice.id
+}
+
+# HTTP Proxy
+resource "google_compute_target_http_proxy" "default" {
+  name     = "web-proxy"
+  url_map  = google_compute_url_map.default.id
+}
+
+# Reserve an IP Address for the Load Balancer
+resource "google_compute_global_address" "default" {
+  name = "external-address"
+}
+
+# Forwarding Rule
+resource "google_compute_global_forwarding_rule" "default" {
+  name                  = "forward-application"
+  ip_protocol           = "TCP"
+  load_balancing_scheme = "EXTERNAL"
+  port_range            = "80"
+  target                = google_compute_target_http_proxy.default.id
+  ip_address            = google_compute_global_address.default.address
+}
+
 # get list of virtual machine ip addresses
 output "external-ip" {
   value = google_compute_instance.webservers[*].network_interface[0].access_config[0].nat_ip
+}
+# get the load balencer public ip
+output "lb-ip" {
+  value = google_compute_global_address.default.address
 }
