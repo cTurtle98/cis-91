@@ -11,6 +11,8 @@
           - python3-pip 
           - python3-venv
 
+
+# Step 3: Configure the Servers with Ansible
 - hosts: gcp_role_web
   name: Install Apache on the web servers
   become: yes

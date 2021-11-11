@@ -35,7 +35,7 @@ resource "google_compute_network" "vpc_network" {
   name = "cis91-network"
 }
 
-# webserver virtual machines
+# Step 1: Make Multiple Instances
 resource "google_compute_instance" "webservers" {
   count        = 3
   name         = "web${count.index}"
@@ -142,6 +142,7 @@ resource "google_compute_global_forwarding_rule" "default" {
 output "external-ip" {
   value = google_compute_instance.webservers[*].network_interface[0].access_config[0].nat_ip
 }
+# Step 2: Update the Output
 # get the load balencer public ip
 output "lb-ip" {
   value = google_compute_global_address.default.address
