@@ -1,0 +1,7 @@
+{
+    "files.autoSave": "onFocusChange",
+    "editor.fontFamily": "OpenDyslexicMono, Consolas, 'Courier New', monospace",
+    "editor.renderWhitespace": "boundary",
+    "editor.bracketPairColorization.enabled": true,
+    "editor.codeLensFontFamily": "OpenDyslexicMono, Consolas, 'Courier New', monospace"
+}
