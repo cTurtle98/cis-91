@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  name: Add cis-92 packages
+  name: cis-91 lab12 ciaran farley
   become: yes
   tasks:
     - name: Install packages 
@@ -10,3 +10,21 @@
         name:
           - python3-pip 
           - python3-venv
+          - nodejs
+
+    - name: create nodeuser
+      ansible.builtin.user:
+        name: nodeuser
+
+    - name: copy service definiton
+      ansible.builtin.copy:
+        dest: "/lib/systemd/system/node_app.service"
+        src: node_app.service
+        owner: root
+
+    - name: copy service code
+      ansible.builtin.copy:
+          dest: "/home/nodeuser/app.js"
+          src: app.js
+          owner: nodeuser
+    
