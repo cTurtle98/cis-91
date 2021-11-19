@@ -27,4 +27,10 @@
           dest: "/home/nodeuser/app.js"
           src: app.js
           owner: nodeuser
+
+    - name: enable service
+      ansible.builtin.systemd:
+        name: node_app
+        enabled: yes
+        state: restarted
     
